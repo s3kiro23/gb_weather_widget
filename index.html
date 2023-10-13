@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Widget Météo</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+	</head>
+
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			background-color: lightblue;
+			color: white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 100vh;
+			margin: 0;
+			font-family: "Inter", sans-serif;
+		}
+
+		.weather-widget-container {
+			background: linear-gradient(0deg, rgba(101, 198, 255, 1) 0%, rgba(0, 149, 255, 1) 100%);
+			width: 25%;
+			border-radius: 20px;
+			padding: 20px;
+		}
+
+		.weather-widget-body {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.weather-widget-current-row {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.current-city {
+			font-size: 1.3em;
+		}
+
+		.current-temp {
+			font-size: 3.3em;
+		}
+
+		.current-content-right {
+			text-align: end;
+			display: flex;
+			flex-direction: column;
+			gap: 0.2rem;
+		}
+
+		.current-description {
+			font-size: 1.3em;
+		}
+
+		.current-min-max-temp {
+			font-size: 1.3em;
+		}
+
+		.current-icon img {
+			width: 20%;
+		}
+
+		.weather-widget-forecast-row {
+			display: flex;
+		}
+
+		.forecast-content {
+			width: auto;
+			padding: 10px 0 10px 0;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+		}
+
+		.forecast-hour {
+			font-size: 20px;
+			color: lightgray;
+		}
+
+		img {
+			width: 45%;
+		}
+
+		.forecast-temp {
+			font-size: 24px;
+		}
+
+		hr {
+			margin: 15px 0 15px 0;
+		}
+	</style>
+	<body>
+		<div class="weather-widget-container">
+			<div class="weather-widget-body">
+				<div class="weather-widget-current-row">
+					<div class="current-content-left">
+						<div class="current-city">Ajaccio</div>
+						<div class="current-temp" id="temp"></div>
+					</div>
+					<div class="current-content-right">
+						<div class="current-icon"><img id="current-icon" src="./icon_clear.png" alt="clear" /></div>
+						<div class="current-description" id="desc">Ensoleillé</div>
+						<div class="current-min-max-temp" id="min-max">Max. 26° Min. 12°</div>
+					</div>
+				</div>
+				<hr>
+				<div class="weather-widget-forecast-row">
+					<div class="forecast-content" id="0">
+						<div class="forecast-hour">16 h</div>
+						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
+						<div class="forecast-temp">25°</div>
+					</div>
+					<div class="forecast-content" id="1">
+						<div class="forecast-hour">16 h</div>
+						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
+						<div class="forecast-temp">25°</div>
+					</div>
+					<div class="forecast-content" id="2">
+						<div class="forecast-hour">16 h</div>
+						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
+						<div class="forecast-temp">25°</div>
+					</div>
+					<div class="forecast-content" id="3">
+						<div class="forecast-hour">16 h</div>
+						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
+						<div class="forecast-temp">25°</div>
+					</div>
+					<div class="forecast-content" id="4">
+						<div class="forecast-hour">16 h</div>
+						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
+						<div class="forecast-temp">25°</div>
+					</div>
+					<div class="forecast-content" id="5">
+						<div class="forecast-hour">16 h</div>
+						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
+						<div class="forecast-temp">25°</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			const APPID = "6cb62590e80421898cf0e7a533cdf0a0";
+			const CACHE_KEY = "weather_ajaccio";
+			const CITY = "Ajaccio, Corse";
+			const coordinates = { lat: "41.9194", lon: "8.7386", units: "metric" };
+
+			function timestampToHour(timestamp) {
+				const date = new Date(timestamp * 1000); // Convertir le timestamp en millisecondes
+				const hours = date.getHours();
+				const formattedHour = hours.toString().padStart(2, "0");
+				return `${formattedHour} h`;
+			}
+
+			function checkWeatherIcon() {}
+
+			function createWeatherContent(data) {
+				console.log(data);
+				const weatherCurrentData = data.current;
+				const weatherDailyData = data.daily;
+				const forecastData = data.hourly;
+
+				// Traitement pour les données actuelles (courante)
+				const currentTemp = document.getElementById("temp");
+				const currentIcon = document.getElementById("current-icon");
+				const currentDescription = document.getElementById("desc");
+				const currentMinMax = document.getElementById("min-max");
+
+				currentTemp.innerHTML = parseInt(weatherCurrentData.temp) + "°";
+				currentIcon.setAttribute("src", `./${weatherCurrentData.weather[0].icon}.png`);
+				currentDescription.innerHTML = weatherCurrentData.weather[0].main;
+				currentMinMax.innerHTML = `Max. ${parseInt(weatherDailyData.temp.max)}° Min. ${parseInt(weatherDailyData.temp.min)}°`;
+
+				//Traitement pour les données prévisionnelles
+				const forecastContentElements = document.querySelectorAll(".forecast-content");
+				const forecastArray = Array.from(forecastContentElements);
+
+				console.log(forecastArray);
+				console.log(forecastData);
+
+				forecastArray.forEach(function (element, index) {
+					element.children[0].innerHTML = timestampToHour(forecastData[index].dt);
+					const imgElement = element.querySelector(".forecast-icon img");
+					if (imgElement) {
+						imgElement.setAttribute("src", `./${forecastData[index].weather[0].icon}.png`);
+					}
+					element.children[2].innerHTML = `${parseInt(forecastData[index].temp)}°`;
+				});
+			}
+
+			function fillPageWithData(data) {
+				// Pour la météo actuelle
+				createWeatherContent(data, CITY);
+			}
+
+			// Call OpenWeather API
+			function fetchWeatherAPI(data) {
+				const apiUrl = `https://api.openweathermap.org/data/3.0/onecall?units=${data.units}&lat=${data.lat}&lon=${data.lon}&appid=${APPID}`;
+				fetch(apiUrl)
+					.then((response) => response.json())
+					.then((data) => {
+						console.log(data);
+						let dataToStore = {
+							current: data.current,
+							hourly: data.hourly.slice(0, 6),
+							daily: data.daily[0],
+						};
+						localStorage.setItem(CACHE_KEY, JSON.stringify(dataToStore));
+						refresh();
+					})
+					.catch((error) => {
+						refresh();
+						console.error(error);
+					});
+			}
+
+			function checkTimestamp(data) {
+				// define slot at 10min (600secs)
+				let slot = 1 * 60;
+				// get current Date
+				let currentDate = new Date();
+				// convert Date to timestamp with seconds
+				let formattedDate = Math.floor(currentDate.getTime() / 1000);
+				// check diff between currentDate & data in cache
+				let diff = formattedDate - data.current.dt;
+				console.log("Différence timestamp : " + diff);
+				return diff > slot ? true : false;
+			}
+
+			function refresh() {
+				const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
+				if (cachedData) {
+					const oldData = checkTimestamp(cachedData);
+					console.log("les données sont anciennes ? : " + oldData);
+					if (oldData) {
+						console.log("c'est l'refresh !");
+						fetchWeatherAPI(coordinates);
+						return;
+					}
+					fillPageWithData(cachedData);
+				}
+			}
+
+			//gb.onload = () => {};
+			refresh();
+			//setInterval(refresh(), 2000);
+		</script>
+	</body>
+</html>
