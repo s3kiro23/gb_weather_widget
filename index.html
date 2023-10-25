@@ -13,23 +13,27 @@
 		}
 
 		body {
-			background-color: lightblue;
 			color: white;
-			min-height: 100vh;
-			margin: 0;
 			font-family: "Inter", sans-serif;
 		}
 
 		.weather-widget-container {
-			background: linear-gradient(0deg, rgba(101, 198, 255, 1) 0%, rgba(0, 149, 255, 1) 100%);
+			background: linear-gradient(180deg, rgba(61,129,171,1) 50%, rgba(116,160,187,1) 100%);
 			width: auto;
 			border-radius: 20px;
 			padding: 20px;
+			font-size: 1.1em;
+			transition: opacity 2s ease-in;
 		}
 
-		.weather-widget-body {
-			display: flex;
-			flex-direction: column;
+		.hide-widget-body {
+			display: none;
+			opacity: 0;
+		}
+
+		.transition-effect {
+			opacity: 1;
+			transition: opacity 2s ease-in;
 		}
 
 		.weather-widget-current-row,
@@ -38,46 +42,37 @@
 			justify-content: space-between;
 		}
 
-		.current-city,
-		.current-description,
-		.current-min-max-temp {
-			font-size: 1.3em;
-		}
-
-		.current-temp {
-			font-size: 3.3em;
+		#current-temp {
+			font-size: 3em;
 		}
 
 		.current-content-right {
-			text-align: end;
 			display: flex;
 			flex-direction: column;
-			gap: 0.2rem;
+			justify-content: space-between;
+			text-align: end;
 		}
 
-		.current-icon img {
-			width: 15%;
-		}
-
-		.weather-widget-forecast-row {
+		.current-icon {
 			display: flex;
+			justify-content: end;
+		}
+
+		#current-icon-img {
+			width: 20%;
 		}
 
 		.forecast-content {
-			width: auto;
-			text-align: center;
+			width: 10%;
 			display: flex;
 			flex-direction: column;
+			justify-content: space-between;
 			gap: 0.5rem;
-			font-size: 1.1rem;
+			text-align: center;
 		}
 
 		.forecast-hour {
 			color: rgb(230, 230, 230);
-		}
-
-		img {
-			width: 50%;
 		}
 
 		.separate-line {
@@ -85,87 +80,134 @@
 			margin: 15px 0;
 			padding: 0.5px;
 		}
+
+		#loading-spinner {
+			background: url("./loading.svg") no-repeat;
+			-webkit-background-size: 45px 45px;
+			-moz-background-size: 45px 45px;
+			background-size: 45px 45px;
+			width: 45px;
+			height: 45px;
+		}
 	</style>
 	<body>
 		<div class="weather-widget-container">
-			<div class="weather-widget-body">
+			<center>
+				<div id="loading-spinner"></div>
+			</center>
+			<div id="weather-widget-body" class="hide-widget-body">
 				<div class="weather-widget-current-row">
 					<div class="current-content-left">
-						<div class="current-city">Ajaccio</div>
-						<div class="current-temp" id="temp"></div>
+						<div id="current-city"></div>
+						<div id="current-temp"></div>
 					</div>
 					<div class="current-content-right">
-						<div class="current-icon"><img id="current-icon" src="./icon_clear.png" alt="clear" /></div>
-						<div class="current-description" id="desc">Ensoleillé</div>
-						<div class="current-min-max-temp" id="min-max">Max. 26° Min. 12°</div>
+						<div class="current-icon">
+							<img id="current-icon-img" src="" alt="clear" />
+						</div>
+						<div id="current-description"></div>
+						<div id="current-min-max-temp"></div>
 					</div>
 				</div>
 				<div class="separate-line"></div>
 				<div class="weather-widget-forecast-row">
 					<div class="forecast-content" id="0">
-						<div class="forecast-hour">16 h</div>
-						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
-						<div class="forecast-temp">25°</div>
+						<div class="forecast-hour"></div>
+						<img src="" alt="clear" />
+						<div class="forecast-temp"></div>
 					</div>
 					<div class="forecast-content" id="1">
-						<div class="forecast-hour">16 h</div>
-						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
-						<div class="forecast-temp">25°</div>
+						<div class="forecast-hour"></div>
+						<img src="" alt="clear" />
+						<div class="forecast-temp"></div>
 					</div>
 					<div class="forecast-content" id="2">
-						<div class="forecast-hour">16 h</div>
-						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
-						<div class="forecast-temp">25°</div>
+						<div class="forecast-hour"></div>
+						<img src="" alt="clear" />
+						<div class="forecast-temp"></div>
 					</div>
 					<div class="forecast-content" id="3">
-						<div class="forecast-hour">16 h</div>
-						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
-						<div class="forecast-temp">25°</div>
+						<div class="forecast-hour"></div>
+						<img src="" alt="clear" />
+						<div class="forecast-temp"></div>
 					</div>
 					<div class="forecast-content" id="4">
-						<div class="forecast-hour">16 h</div>
-						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
-						<div class="forecast-temp">25°</div>
+						<div class="forecast-hour"></div>
+						<img src="" alt="clear" />
+						<div class="forecast-temp"></div>
 					</div>
 					<div class="forecast-content" id="5">
-						<div class="forecast-hour">16 h</div>
-						<div class="forecast-icon"><img src="./icon_clear.png" alt="clear" /></div>
-						<div class="forecast-temp">25°</div>
+						<div class="forecast-hour"></div>
+						<img src="" alt="clear" />
+						<div class="forecast-temp"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<script>
 			const APPID = "6cb62590e80421898cf0e7a533cdf0a0";
-			const CACHE_KEY = "weather_ajaccio";
+			const CACHE_KEY = "weather_wigdet";
 			const CITY = "Ajaccio, Corse";
 			const COORDINATES = { lat: "41.9194", lon: "8.7386", units: "metric" };
 
-			function timestampToHour(timestamp) {
+			function timestampToHour(timestamp, sunPosition) {
 				const date = new Date(timestamp * 1000); // Convertir le timestamp en millisecondes
 				const hours = date.getHours();
 				const formattedHour = hours.toString().padStart(2, "0");
-				return `${formattedHour} h`;
+
+				if (sunPosition) {
+					const minutes = date.getMinutes();
+					const formattedMinutes = minutes.toString().padStart(2, "0");
+					return `${formattedHour}:${formattedMinutes}`;
+				}
+				return `${formattedHour}h`;
 			}
 
-			function checkWeatherIcon() {}
+			function checkTimestamp(data, cachedData = false, timestamp = "") {
+				if (cachedData) {
+					const slot = 60; // 1 minute (60 seconds)
+					const currentDate = Math.floor(new Date().getTime() / 1000);
+					const diff = currentDate - data.current.dt;
+					console.log("Différence timestamp : " + diff);
+					return diff > slot;
+				}
 
-			function createWeatherContent(data) {
+				const slot = 3600; // 60 minutes (3600 seconds)
+				const diffSunrise = data.sunrise - timestamp;
+				const diffSunset = data.sunset - timestamp;
+
+				if (diffSunrise >= 0 && diffSunrise < slot) {
+					return "sunrise";
+				}
+
+				if (diffSunset >= 0 && diffSunset < slot) {
+					return "sunset";
+				}
+
+				return "";
+			}
+
+			function fillPageWithData(data) {
 				console.log(data);
+				// Récupération des données
 				const weatherCurrentData = data.current;
 				const weatherDailyData = data.daily;
 				const forecastData = data.hourly;
 
 				// Traitement pour les données actuelles (courante)
-				const currentTemp = document.getElementById("temp");
-				const currentIcon = document.getElementById("current-icon");
-				const currentDescription = document.getElementById("desc");
-				const currentMinMax = document.getElementById("min-max");
+				const currentTemp = document.getElementById("current-temp");
+				const currentIcon = document.getElementById("current-icon-img");
+				const currentDescription = document.getElementById("current-description");
+				const currentMinMax = document.getElementById("current-min-max-temp");
+				const currentCity = document.getElementById("current-city");
+				const weatherWidgetBody = document.getElementById("weather-widget-body");
+				const loadingSpinner = document.getElementById("loading-spinner");
 
-				currentTemp.innerHTML = parseInt(weatherCurrentData.temp) + "°";
 				currentIcon.setAttribute("src", `./${weatherCurrentData.weather[0].icon}.png`);
+				currentTemp.innerHTML = parseInt(weatherCurrentData.temp) + "°";
 				currentDescription.innerHTML = weatherCurrentData.weather[0].main;
 				currentMinMax.innerHTML = `Max. ${parseInt(weatherDailyData.temp.max)}° Min. ${parseInt(weatherDailyData.temp.min)}°`;
+				currentCity.innerHTML = CITY;
 
 				//Traitement pour les données prévisionnelles
 				const forecastContentElements = document.querySelectorAll(".forecast-content");
@@ -175,18 +217,37 @@
 				console.log(forecastData);
 
 				forecastArray.forEach(function (element, index) {
-					element.children[0].innerHTML = timestampToHour(forecastData[index].dt);
-					const imgElement = element.querySelector(".forecast-icon img");
-					if (imgElement) {
-						imgElement.setAttribute("src", `./${forecastData[index].weather[0].icon}.png`);
-					}
-					element.children[2].innerHTML = `${parseInt(forecastData[index].temp)}°`;
-				});
-			}
+					const imgElement = element.querySelector("img");
+					const sunPosition = checkTimestamp(weatherCurrentData, false, forecastData[index].dt);
 
-			function fillPageWithData(data) {
-				// Pour la météo actuelle
-				createWeatherContent(data, CITY);
+					if (imgElement) {
+						const weather = forecastData[index].weather[0];
+						let iconSrc = `./${weather.icon}.png`;
+						let timestamp = forecastData[index].dt;
+
+						if (sunPosition === "sunrise") {
+							if (weather.icon === "01n") {
+								iconSrc = `./sunrise.png`;
+								timestamp = weatherCurrentData.sunrise;
+							}
+						} else if (sunPosition === "sunset") {
+							if (weather.icon === "01d") {
+								iconSrc = `./sunset.png`;
+								timestamp = weatherCurrentData.sunset;
+							}
+						}
+
+						imgElement.setAttribute("src", iconSrc);
+
+						const displayMinutes = sunPosition && (weather.icon === "01d" || weather.icon === "01n");
+						element.children[0].innerHTML = timestampToHour(timestamp, displayMinutes);
+					}
+
+					element.children[2].innerHTML = `${parseInt(forecastData[index].temp)}°`;
+					loadingSpinner.setAttribute("style", "display: none");
+					weatherWidgetBody.classList.remove("hide-widget-body");
+					weatherWidgetBody.classList.add("transition-effect");
+				});
 			}
 
 			// Call OpenWeather API
@@ -202,7 +263,9 @@
 							daily: data.daily[0],
 						};
 						localStorage.setItem(CACHE_KEY, JSON.stringify(dataToStore));
-						fillPageWithData(dataToStore);
+						setTimeout(function () {
+							fillPageWithData(dataToStore);
+						}, 2000);
 					})
 					.catch((error) => {
 						refresh();
@@ -210,23 +273,10 @@
 					});
 			}
 
-			function checkTimestamp(data) {
-				// define slot at 1min (60secs)
-				let slot = 1 * 60;
-				// get current Date
-				let currentDate = new Date();
-				// convert Date to timestamp with seconds
-				let formattedDate = Math.floor(currentDate.getTime() / 1000);
-				// check diff between currentDate & data in cache
-				let diff = formattedDate - data.current.dt;
-				console.log("Différence timestamp : " + diff);
-				return diff > slot ? true : false;
-			}
-
 			function refresh() {
 				const cachedData = JSON.parse(localStorage.getItem(CACHE_KEY));
 				if (cachedData) {
-					const oldData = checkTimestamp(cachedData);
+					const oldData = checkTimestamp(cachedData, true);
 					console.log("les données sont anciennes ? : " + oldData);
 					if (oldData) {
 						console.log("c'est l'refresh !");
@@ -239,9 +289,9 @@
 				fetchWeatherAPI(COORDINATES);
 			}
 
-			gb.onload = () => {
-				refresh();
-			};
+			//gb.onload = () => {
+			refresh();
+			//};
 		</script>
 	</body>
 </html>
